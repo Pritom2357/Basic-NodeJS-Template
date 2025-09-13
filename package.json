@@ -1,0 +1,40 @@
+{
+  "name": "basic-nodejs-template",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Pritom Biswas <pritombiswas9999@gmail.com>",
+  "contributors": [
+    {
+      "name": "Pritom Biswas",
+      "email": "pritombiswas9999@gmail.com"
+    }
+  ],
+  "license": "ISC",
+  "description": "A ready to use node backend template with authentication and user management pipeline",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cloudinary": "^2.7.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.1.0",
+    "google-auth-library": "^10.3.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mailtrap": "^4.2.0",
+    "morgan": "^1.10.1",
+    "multer": "^2.0.2",
+    "nodemailer": "^6.10.1",
+    "pg": "^8.16.3",
+    "socket.io": "^4.8.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  }
+}
