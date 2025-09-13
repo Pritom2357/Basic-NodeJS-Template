@@ -1,7 +1,7 @@
 # Basic NodeJS Template
 
 A reusable Node.js backend template with authentication flow, user + subscription + avatar management, email verification, password reset, notifications (event bus + websockets) and API docs.  
-I built this so I don’t need to rewrite the same boring auth + profile stuff every project. Kept it simple but tried to stay mindful about basic security.
+I built this so I don’t need to rewrite the same boring auth + profile stuff every project 😎. Kept it simple but tried to stay mindful about basic security.
 
 ## Used stacks & packages
 - PostgreSQL ([Neon](https://console.neon.tech/) hosting)  
@@ -18,7 +18,7 @@ I built this so I don’t need to rewrite the same boring auth + profile stuff e
 ---
 
 ## Why this exists
-When I start a full‑stack project usually I have to:
+When I start a full‑stack project usually I have to 😫😫:
 - Register / login / email verify
 - Password reset / change
 - Manage profile + avatar
@@ -48,7 +48,7 @@ JSON spec: `http://localhost:3000/api/docs.json`
 
 ---
 
-## High level features
+## High level features 😎😎
 - Local username/email + password auth
 - Optional email verification (`REQUIRE_EMAIL_VERIFICATION`)
 - Google OAuth login (idToken POST flow)
@@ -80,7 +80,7 @@ src/
 
 ---
 
-## Auth flow (quick)
+## 👉🏼👉🏼 Auth flow (quick) 
 1. Register → (maybe email verify)  
 2. Login → returns `accessToken` + `refreshToken` (refresh stored in DB plain for now)  
 3. Frontend saves access token (currently localStorage style) → calls `/api/auth/verify-token` on load  
@@ -97,7 +97,7 @@ Update endpoint:
 PATCH /api/user/subscription/:userId
 { "subscription_type": "plus" }
 ```
-(You can later hook Stripe/Paddle webhooks to set this server-side.)
+👉🏼 (You can later hook Stripe/Paddle webhooks to set this server-side.)
 
 ---
 
@@ -112,11 +112,11 @@ Flow:
 4. DB updated with `avatar_url`
 5. Event emitted → socket broadcast (if you wire client side)
 
-> Old images are not deleted right now (could store `public_id` and remove previous).
+> 👉🏼 Old images are not deleted right now (could store `public_id` and remove previous).
 
 ---
 
-## Notification pipeline 
+## Notification pipeline ❕❗
 Pieces:
 - `eventBus` (Node EventEmitter) → pub(publisher) inside process
 - `eventsNames.js` → keeps constants (e.g. `USER_LOGIN`, `USER_PROFILE_UPDATED`, `PASSWORD_RESET_REQUESTED`)
@@ -142,7 +142,7 @@ Future ideas:
 
 ---
 
-## Endpoints (short list)
+## Endpoints (short list) 😎😎
 Full details already documented with Swagger:
 ```
 Auth:
@@ -464,7 +464,7 @@ socket.join('user:' + userId)
 io.to('user:' + userId).emit('something', payload)
 ```
 
-
+It is important for extending the notifications features. ❕❕
 
 ---
 
@@ -480,7 +480,7 @@ http://localhost:3000/api/docs.json
 
 ---
 
-## Common gotchas
+## Common gotchas 🤯🤯
 | Issue | Fix |
 |-------|-----|
 | 401 on protected route | Ensure `Authorization: Bearer <accessToken>` header |
@@ -500,5 +500,5 @@ http://localhost:3000/api/docs.json
 ---
 
 ## Disclaimer
-It is moderately basic implementation. There are a lot of ways to make it more robust, more secure and more user friendly. But this is the limit of me until now, hopefully, I will update it as I learn new things.
+It is moderately basic implementation. There are a lot of ways to make it more robust, more secure and more user friendly. But this is the limit of me until now 🙂🙂, hopefully, I will update it as I learn new things.
 
