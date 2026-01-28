@@ -21,6 +21,12 @@ jobs:
             key: ${{secrets.SSH_KEY}}
             passphrase: ${{secrets.SSH_PASSPHRASE}}
             script: |
-              cd /root/my-backend || (mkdir -p /root/my-backend && cd /root/my-backend && git clone https://github.com/Pritom2357/Basic-NodeJS-Template.git .)
+              mkdir -p /root/my-backend
+              cd /root/my-backend
+              
+              if [ ! -d .git ]; then
+                git clone https://github.com/Pritom2357/Basic-NodeJS-Template.git .
+              fi
+              
               git pull origin main
               docker compose up -d --build
