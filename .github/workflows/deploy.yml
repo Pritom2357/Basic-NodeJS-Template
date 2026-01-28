@@ -30,4 +30,33 @@ jobs:
               fi
               
               git pull origin main
+              
+              mkdir -p src
+              cat > src/.env << 'EOF'
+              NODE_ENV=production
+              PORT=3000
+              DATABASE_URL=${{secrets.DATABASE_URL}}
+              PASSWORD_SALT_ROUNDS=13
+              LOGIN_MAX_ATTEMPTS=5
+              ACCOUNT_LOCK_MINUTES=15
+              JWT_ACCESS_SECRET=${{secrets.JWT_ACCESS_SECRET}}
+              JWT_REFRESH_SECRET=${{secrets.JWT_REFRESH_SECRET}}
+              ACCESS_TOKEN_TTL=160m
+              REFRESH_TOKEN_DAYS=30
+              GOOGLE_CLIENT_ID=${{secrets.GOOGLE_CLIENT_ID}}
+              GOOGLE_LINK_ACCOUNTS_BY_EMAIL=true
+              REQUIRE_EMAIL_VERIFICATION=true
+              LOG_REQUEST_BODY=false
+              LOG_SQL=false
+              ENABLE_WEBSOCKETS=true
+              ENABLE_EMAIL_NOTIFICATIONS=true
+              ENABLE_PUSH_NOTIFICATIONS=true
+              MAILTRAP_TOKEN=${{secrets.MAILTRAP_TOKEN}}
+              MAIL_FROM_NAME=${{secrets.MAIL_FROM_NAME}}
+              MAIL_FROM_ADDRESS=${{secrets.MAIL_FROM_ADDRESS}}
+              CLOUDINARY_CLOUD_NAME=${{secrets.CLOUDINARY_CLOUD_NAME}}
+              CLOUDINARY_API_KEY=${{secrets.CLOUDINARY_API_KEY}}
+              ENABLE_SWAGGER=false
+              EOF
+              
               docker compose up -d --build
