@@ -25,6 +25,7 @@ jobs:
               cd /root/my-backend
               
               if [ ! -d .git ]; then
+                rm -rf /root/my-backend/*
                 git clone https://github.com/Pritom2357/Basic-NodeJS-Template.git .
               fi
               
