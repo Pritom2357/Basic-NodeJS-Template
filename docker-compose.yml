@@ -11,9 +11,12 @@ services:
     environment:
       - DATABASE_URL=postgresql://localUser:localPass@postgres:5432/localDB
     depends_on:
-      - loki
-      - prom-server
-      - postgres
+      postgres:
+        condition: service_healthy
+      loki:
+        condition: service_started
+      prom-server:
+        condition: service_started
     networks:
       - monitoring
     

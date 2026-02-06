@@ -118,7 +118,7 @@ jobs:
             mkdir -p src
             cat > src/.env << 'EOF'
             NODE_ENV=production
-            PORT=3000
+            PORT=8000
             DATABASE_URL=${{secrets.DATABASE_URL}}
             PASSWORD_SALT_ROUNDS=13
             LOGIN_MAX_ATTEMPTS=5
