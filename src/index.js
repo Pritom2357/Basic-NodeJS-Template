@@ -21,7 +21,7 @@ dotenv.config({path: path.resolve(__dirname, '.env')});
 const app = express();
 const {authRouter} = require('./routes/authRoutes.js');
 const {userRouter} = require('./routes/userRoutes.js');
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 const server = http.createServer(app);
 const socketLayer = createSocketServer(server);
 const swaggerSpec = swaggerJsdoc(swaggerJsdocOptions);

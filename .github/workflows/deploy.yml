@@ -39,7 +39,7 @@ jobs:
       - name: Start App Server
         env:
           NODE_ENV: test
-          PORT: 3000
+          PORT: 8000
           DATABASE_URL: postgresql://localUser:localPass@localhost:5432/localDB
           PASSWORD_SALT_ROUNDS: 10
           LOGIN_MAX_ATTEMPTS: 5
@@ -58,7 +58,7 @@ jobs:
           
           # Wait up to 10 seconds for server to be ready
           for i in {1..20}; do
-            if curl -s http://localhost:3000 > /dev/null 2>&1; then
+            if curl -s http://localhost:8000 > /dev/null 2>&1; then
               echo "✓ Server is ready!"
               break
             fi
