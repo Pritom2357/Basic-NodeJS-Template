@@ -5,6 +5,99 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "8000:3000"
     env_file:
       - src/.env
+    environment:
+      - DATABASE_URL=postgresql://localUser:localPass@postgres:5432/localDB
+    depends_on:
+      - loki
+      - prom-server
+      - postgres
+    networks:
+      - monitoring
+    
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    ports:
+      - "5438:5432"
+    environment:
+      POSTGRES_USER: localUser
+      POSTGRES_PASSWORD: localPass
+      POSTGRES_DB: localDB
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d localDB -U localUser"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - monitoring
+
+  prom-server:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus:/prometheus
+    command: 
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles' 
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+  postgresql-exporter:
+    image: prometheuscommunity/postgres-exporter
+    container_name: postgresql-exporter
+    ports:
+      - "9187:9187"
+    environment:
+      DATA_SOURCE_NAME: "postgresql://localUser:localPass@postgres:5432/localDB?sslmode=disable"
+    depends_on:
+      prom-server:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "8090:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGNUP=false
+    volumes:
+      - grafana:/var/lib/grafana
+    restart: unless-stopped
+    depends_on:
+      - prom-server
+    networks:
+      - monitoring
+  
+  loki:
+    image: grafana/loki:2.9.4
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - monitoring
+
+volumes:
+  postgres_data:
+  grafana:
+  prometheus:
+
+networks:
+  monitoring:
+    driver: bridge

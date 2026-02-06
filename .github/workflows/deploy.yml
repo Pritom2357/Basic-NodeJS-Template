@@ -6,7 +6,45 @@ on:
       - main
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: localUser
+          POSTGRES_PASSWORD: localPass
+          POSTGRES_DB: localDB
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        env:
+          DATABASE_URL: postgresql://localUser:localPass@localhost:5432/localDB
+          NODE_ENV: test
+        run: npm run test:all
+
   deploy:
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
