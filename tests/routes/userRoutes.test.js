@@ -63,10 +63,10 @@ describe('User Routes Integration Tests', () => {
             
             // Accept 200 success or 403 if authorization middleware checks user ownership
             if (response.status === 200) {
-                expect(response.body.id).toBe(userId);
-                expect(response.body.username).toBe(testUser.username);
-                expect(response.body.email).toBe(testUser.email);
-                expect(response.body.passwordhash).toBeUndefined();
+                expect(response.body.user.id).toBe(userId);
+                expect(response.body.user.username).toBe(testUser.username);
+                expect(response.body.user.email).toBe(testUser.email);
+                expect(response.body.user.passwordhash).toBeUndefined();
             } else if (response.status === 403) {
                 console.log('✓ Authorization middleware working correctly');
             } else {
